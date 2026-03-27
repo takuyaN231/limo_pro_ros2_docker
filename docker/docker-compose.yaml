@@ -69,9 +69,6 @@ services:
       #
       - ../ros2_ws:/root/ros2_ws
 
-      # TminiPro用にydliderのparamを上書き
-      - ../configs/ydlidar/ydlidar.yaml:/root/ros2_ws/src/limo_ros2/limo_bringup/param/ydlidar.yaml
-
     # =====================================================
     # Environment variables
     # =====================================================

@@ -53,20 +53,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-humble-aruco-ros \
  && rm -rf /var/lib/apt/lists/*
 
-# ---------------------------------------------------------
-# YDLIDAR SDK（ネイティブビルド）
-# ---------------------------------------------------------
-# LiDARドライバはaptだけでは不十分なため、
-# SDKをコンテナ内でビルドしておく
-#
-#RUN git clone https://github.com/YDLIDAR/YDLidar-SDK.git && \
-#    mkdir -p YDLidar-SDK/build && \
-#    cd YDLidar-SDK/build && \
-#    cmake .. && \
-#    make -j$(nproc) && \
-#    make install && \
-#    ldconfig && \
-#    rm -rf /root/YDLidar-SDK
 
 # ---------------------------------------------------------
 # AI / YOLO (推論フレームワークのみ)
