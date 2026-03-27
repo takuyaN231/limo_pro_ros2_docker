@@ -1,9 +1,0 @@
-/root/ros2_ws/build/limo_bringup/CMakeFiles/uninstall.dir
-/root/ros2_ws/build/limo_bringup/CMakeFiles/limo_bringup_uninstall.dir
-/root/ros2_ws/build/limo_bringup/CMakeFiles/test.dir
-/root/ros2_ws/build/limo_bringup/CMakeFiles/edit_cache.dir
-/root/ros2_ws/build/limo_bringup/CMakeFiles/rebuild_cache.dir
-/root/ros2_ws/build/limo_bringup/CMakeFiles/list_install_components.dir
-/root/ros2_ws/build/limo_bringup/CMakeFiles/install.dir
-/root/ros2_ws/build/limo_bringup/CMakeFiles/install/local.dir
-/root/ros2_ws/build/limo_bringup/CMakeFiles/install/strip.dir
