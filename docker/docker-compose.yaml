@@ -67,7 +67,9 @@ services:
       #
       # 今回は repo内に ros2_ws を含める設計なので安全。
       #
-      - ../ros2_ws:/root/ros2_ws
+      - ../ros2_ws/src:/root/ros2_ws/src
+
+      - ../maps:/root/ros2_ws/maps
 
     # =====================================================
     # Environment variables
