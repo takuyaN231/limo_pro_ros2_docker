@@ -1,0 +1,101 @@
+version: "3"
+
+services:
+  limo_humble:
+
+    # =====================================================
+    # Build settings
+    # =====================================================
+    # context: Dockerに渡す作業ディレクトリ
+    # ここを ".." にすることで、
+    #   - repo全体（config / ros2_ws など）を参照可能にする
+    #   - 将来 COPY 追加がしやすい
+    #
+    # dockerfile: Dockerfile の場所を明示
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+
+    # =====================================================
+    # Image / Container naming
+    # =====================================================
+    # image: 作成されるDockerイメージ名
+    # 命名規則:
+    #   techshare/<platform>:<ros_distro>
+    #
+    # container_name: 実行中コンテナ名
+    # これを固定することで docker exec が楽になる
+    image: techshare/limo-pro:humble
+    container_name: limo_pro_humble_dev
+
+
+    # =====================================================
+    # Network
+    # =====================================================
+    # ROS2 (DDS) 通信のため host を使用
+    # Jetson + LiDAR + 他PC RViz 構成では必須
+    network_mode: host
+
+
+    # =====================================================
+    # Device access
+    # =====================================================
+    # LiDAR / Serial / USB へアクセスするため必要
+    privileged: true
+
+
+    # =====================================================
+    # Volume mounts
+    # =====================================================
+    volumes:
+
+      # --- 必須 ---
+      # デバイス共有（LiDAR等）
+      - /dev:/dev
+
+      # GUI表示用（RViz / rqt など）
+      - /tmp/.X11-unix:/tmp/.X11-unix
+
+      # ---------------------------------------------------
+      # Bind mount for development
+      # ---------------------------------------------------
+      # ホスト側 ros2_ws をコンテナにマウント
+      #
+      # 重要：
+      #   ホスト側が空の場合、
+      #   コンテナ内 /root/ros2_ws は上書きされる。
+      #
+      # 今回は repo内に ros2_ws を含める設計なので安全。
+      #
+      - ../ros2_ws:/root/ros2_ws
+
+      # TminiPro用にydliderのparamを上書き
+      - ../configs/ydlidar/ydlidar.yaml:/root/ros2_ws/src/limo_ros2/limo_bringup/param/ydlidar.yaml
+
+    # =====================================================
+    # Environment variables
+    # =====================================================
+    environment:
+
+      # ROS2 通信ID
+      # 複数ロボットやRViz別PC運用時に必要
+      # 教育用途では固定値にしておく
+      - ROS_DOMAIN_ID=1
+
+      # GUI関連
+      - DISPLAY=${DISPLAY}
+      - LIBGL_ALWAYS_SOFTWARE=1
+      - QT_X11_NO_MITSHM=1
+
+
+    # =====================================================
+    # NVIDIA runtime (Jetson用)
+    # =====================================================
+    # gpu
+    # runtime: nvidia
+
+
+    # =====================================================
+    # Keep terminal interactive
+    # =====================================================
+    tty: true
