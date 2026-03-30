@@ -3,27 +3,26 @@
 # ROS 2 Humble Docker Image
 # =========================================================
 #
-#   - Dockerは実行環境のみを構築する
-#   - workspace（ros2_ws）はbindで外部管理
+# ・ workspace(ros2_ws) は bind で外部管理
+# ・ limo_pro_ros2 / astra_camera は submodule を bind
+# ・ GPU / CUDA 依存は含めない
 #
 # =========================================================
 
 FROM ros:humble
 
+
 # ---------------------------------------------------------
 # 作業ディレクトリ
 # ---------------------------------------------------------
-# メーカー想定と操作感を合わせる
 WORKDIR /root/ros2_ws
-
 ENV DEBIAN_FRONTEND=noninteractive
+
 
 # ---------------------------------------------------------
 # 基本ツール + ROS2フルセット
+# desktop + slam-toolbox + navigation2 を明示追加
 # ---------------------------------------------------------
-# ros:humble は ros-core なので、
-# desktop + slam + navigation を明示追加する
-#
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     cmake \
@@ -39,7 +38,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-humble-nav2-bringup \
     \
     # -----------------------------------------------------
-    # Vision / Camera / ArUco 系（教材対応）
+    # Vision / ArUco
     # -----------------------------------------------------
     libusb-1.0-0 \
     libusb-1.0-0-dev \
@@ -51,36 +50,49 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-humble-cv-bridge \
     ros-humble-camera-info-manager \
     ros-humble-aruco-ros \
+    \
  && rm -rf /var/lib/apt/lists/*
 
 
 # ---------------------------------------------------------
-# AI / YOLO (推論フレームワークのみ)
+# YDLIDAR SDK
 # ---------------------------------------------------------
-#
-# ultralytics は GPU 非依存のため Dockerfile に含める
-#   - CPUでも動作可能
-#   - GPUがあれば自動利用
-#
-# torch / torchvision は CUDA (JetPack) 依存のため
-# Dockerfileには書かない
-# Jetson Nano / Orin Nano で CUDAバージョンが異なるため
-# ここで固定しない
-#
-RUN pip3 install --no-cache-dir ultralytics
+WORKDIR /tmp
+RUN git clone https://github.com/YDLIDAR/YDLidar-SDK.git && \
+    mkdir -p YDLidar-SDK/build && \
+    cd YDLidar-SDK/build && \
+    cmake .. && \
+    make -j$(nproc) && \
+    make install && \
+    ldconfig && \
+    rm -rf /tmp/YDLidar-SDK
+
 
 # ---------------------------------------------------------
-# 自動source（教育用）
-# ---------------------------------------------------------
-# 毎回 source 打たなくて済むようにする
+# YOLO (CPUベース推論のみ)
 #
+# ・ ultralytics は GPU 非依存のため Dockerfile に含める
+#    (CPU でも動作可能, GPU があれば自動利用)
+#
+# ・ torch / torchvision は CUDA(JetPack) 依存のため
+#    Dockerfileに含めない
+#
+# ---------------------------------------------------------
+RUN pip3 install --no-cache-dir --upgrade pip && \
+    pip3 install --no-cache-dir ultralytics
+
+
+# ---------------------------------------------------------
+# 作業ディレクトリ戻す
+# ---------------------------------------------------------
+WORKDIR /root/ros2_ws
+ 
+ 
+# ---------------------------------------------------------
+# 自動 source 設定
+#
+# ・ ROS2 本体
+# ・ colcon build 後の workspace(存在する場合のみ)
+# ---------------------------------------------------------
 RUN echo "source /opt/ros/humble/setup.bash" >> /etc/bash.bashrc
-
-# ---------------------------------------------------------
-# 注意：
-# ---------------------------------------------------------
-# ・limo_ros2 の clone はここに書かない
-# ・colcon build もしない
-# ・workspaceはbind前提
-#
-# ---------------------------------------------------------
+RUN echo "if [ -f /root/ros2_ws/install/setup.bash ]; then source /root/ros2_ws/install/setup.bash; fi" >> /etc/bash.bashrc

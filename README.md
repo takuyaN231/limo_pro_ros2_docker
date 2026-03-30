@@ -7,3 +7,10 @@
 ・Dockerfile
 ・docker-compose
 ・limo_ros2（submodule予定）
+
+
+
+## 
+time NTP
+
+xhost
