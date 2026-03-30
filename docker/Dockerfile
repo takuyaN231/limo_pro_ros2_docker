@@ -79,7 +79,7 @@ RUN git clone https://github.com/YDLIDAR/YDLidar-SDK.git && \
 #
 # ---------------------------------------------------------
 RUN pip3 install --no-cache-dir --upgrade pip && \
-    pip3 install --no-cache-dir ultralytics
+    pip3 install --no-cache-dir ultralytics --break-system-packages
 
 
 # ---------------------------------------------------------
