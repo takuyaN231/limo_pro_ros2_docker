@@ -85,7 +85,6 @@ RUN apt-get update && apt-get install -y python3-venv && \
     /opt/venv/bin/pip install ultralytics
 
 
-
 # ---------------------------------------------------------
 # 作業ディレクトリ戻す
 # ---------------------------------------------------------
