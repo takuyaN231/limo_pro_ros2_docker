@@ -77,9 +77,13 @@ RUN git clone https://github.com/YDLIDAR/YDLidar-SDK.git && \
 # ・ torch / torchvision は CUDA(JetPack) 依存のため
 #    Dockerfileに含めない
 #
+# ・ YOLO用venv（ROSと分離：aptとpipの依存衝突を防ぐため） 
 # ---------------------------------------------------------
-RUN pip3 install --no-cache-dir --upgrade pip && \
-    pip3 install --no-cache-dir ultralytics --break-system-packages
+RUN apt-get update && apt-get install -y python3-venv && \
+    python3 -m venv /opt/venv && \
+    /opt/venv/bin/pip install --upgrade pip && \
+    /opt/venv/bin/pip install ultralytics
+
 
 
 # ---------------------------------------------------------
