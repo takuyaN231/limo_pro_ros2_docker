@@ -1,3 +1,6 @@
 [submodule "ros2_ws/src/limo_ros2"]
 	path = ros2_ws/src/limo_ros2
 	url = git@github.com:takuyaN231/limo_pro_ros2.git
+[submodule "ros2_ws/src/orbbec_camera"]
+	path = ros2_ws/src/orbbec_camera
+	url = https://github.com/orbbec/OrbbecSDK_ROS2.git
