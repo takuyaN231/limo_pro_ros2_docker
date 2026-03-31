@@ -42,8 +42,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # -----------------------------------------------------
     libusb-1.0-0 \
     libusb-1.0-0-dev \
-    libuvc-dev \
     libudev-dev \
+    v4l-utils \
     ros-humble-vision-msgs \
     ros-humble-image-transport \
     ros-humble-image-publisher \
@@ -71,18 +71,15 @@ RUN git clone https://github.com/YDLIDAR/YDLidar-SDK.git && \
 # ---------------------------------------------------------
 # YOLO (CPUベース推論のみ)
 #
-# ・ ultralytics は GPU 非依存のため Dockerfile に含める
-#    (CPU でも動作可能, GPU があれば自動利用)
-#
-# ・ torch / torchvision は CUDA(JetPack) 依存のため
-#    Dockerfileに含めない
-#
+# ・ ultralytics は GPU 非依存のため Dockerfile に含める (CPU でも動作可能)
+# ・ torch / torchvision は CPU版を明示的にインストール (CUDA依存を排除)
 # ・ YOLO用venv（ROSと分離：aptとpipの依存衝突を防ぐため） 
 # ---------------------------------------------------------
 RUN apt-get update && apt-get install -y python3-venv && \
     python3 -m venv /opt/venv && \
-    /opt/venv/bin/pip install --upgrade pip && \
-    /opt/venv/bin/pip install ultralytics
+    /opt/venv/bin/pip install --no-cache-dir \
+    torch torchvision --index-url https://download.pytorch.org/whl/cpu && \
+    /opt/venv/bin/pip install --no-cache-dir ultralytics
 
 
 # ---------------------------------------------------------
