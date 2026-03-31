@@ -43,6 +43,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libusb-1.0-0 \
     libusb-1.0-0-dev \
     libudev-dev \
+    libuvc-dev \
     v4l-utils \
     ros-humble-vision-msgs \
     ros-humble-image-transport \
@@ -50,6 +51,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-humble-cv-bridge \
     ros-humble-camera-info-manager \
     ros-humble-aruco-ros \
+    ros-humble-backward-ros \
     \
  && rm -rf /var/lib/apt/lists/*
 
