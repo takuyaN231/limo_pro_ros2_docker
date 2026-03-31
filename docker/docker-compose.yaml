@@ -38,6 +38,7 @@ services:
       # --- 必須 ---
       # デバイス共有（LiDAR等）
       - /dev:/dev
+      - /dev/bus/usb:/dev/bus/usb
 
       # GUI表示用（RViz / rqt など）
       - /tmp/.X11-unix:/tmp/.X11-unix

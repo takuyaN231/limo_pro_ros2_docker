@@ -42,3 +42,7 @@ root@master:~/ros2_ws# ros2 run nav2_map_server map_saver_cli -f ~/ros2_ws/src/l
 ros2 launch limo_bringup navigation2.launch.py \
 map:=/root/ros2_ws/src/limo_ros2/limo_bringup/maps/mymap.yaml
 
+
+
+need orbbec-v1(OpenNI) 
+
