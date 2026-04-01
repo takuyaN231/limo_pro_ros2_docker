@@ -50,7 +50,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-humble-image-publisher \
     ros-humble-cv-bridge \
     ros-humble-camera-info-manager \
-    ros-humble-aruco-ros \
     ros-humble-backward-ros \
     \
  && rm -rf /var/lib/apt/lists/*
