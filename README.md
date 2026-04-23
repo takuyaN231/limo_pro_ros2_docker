@@ -66,3 +66,6 @@ docker-compose up -d
   
 ・コンテナに入る  
 docker exec -it limo bash  
+  
+・ビルド  
+colcon build  
