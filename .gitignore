@@ -5,6 +5,7 @@
 build/
 install/
 log/
+Log/
  
 # ==============================
 # Python
