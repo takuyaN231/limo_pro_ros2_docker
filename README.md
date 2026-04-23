@@ -69,3 +69,6 @@ docker exec -it limo bash
   
 ・ビルド  
 colcon build  
+
+・毎回Ubuntuの電源投入時に1度だけ以下を行ってからdockerに入る  
+xhost -local:  
