@@ -5,7 +5,7 @@
  
 # 導入
 
-## ROSの署名鍵をkeyring方式で登録（推奨）
+・ROSの署名鍵をkeyring方式で登録（推奨）
 curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc -o ros.asc
 gpg --dearmor ros.asc
 sudo mv ros.asc.gpg /usr/share/keyrings/ros-archive-keyring.gpg
