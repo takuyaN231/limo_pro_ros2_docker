@@ -58,6 +58,11 @@ git clone --recursive https://github.com/takuyaN231/limo_pro_ros2_docker.git
 cd limo_pro_ros2_docker/  
 git submodule status  
   
-・ビルド(ROS_DOMAIN_IDはdocker-compose.yamlで変更可能)  
-docker-compose up --build  
-
+・イメージ作成  
+docker-compose build  
+  
+・コンテナ作成  
+docker-compose up -d  
+  
+・コンテナに入る  
+docker exec -it limo bash  
